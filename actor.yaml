@@ -1,0 +1,10 @@
+id: website-content-crawler
+name: Website Content Crawler
+runtime: node
+entry: src/main.ts
+engine_support:
+  - camoufox
+  - playwright
+version: 1.0.0
+schema_semver: 1.0.0
+description: Screenshot-style website content crawler with schema-driven input and queue runtime protocol.

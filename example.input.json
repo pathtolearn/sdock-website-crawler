@@ -1,0 +1,23 @@
+{
+  "startUrls": [
+    "https://example.com"
+  ],
+  "crawlerType": "camoufox",
+  "includeGlobs": [],
+  "excludeGlobs": [],
+  "maxDepth": 2,
+  "maxPages": 40,
+  "respectRobots": true,
+  "waitForDynamicContentSeconds": 2,
+  "waitForSelector": "",
+  "clickSelectors": [],
+  "removeCookieWarnings": true,
+  "removeNavigationElements": true,
+  "htmlTransformer": "markdown",
+  "removeCssSelectors": [],
+  "keepCssSelectors": [],
+  "saveHtml": false,
+  "saveMarkdown": true,
+  "saveText": true,
+  "maxResults": 500
+}

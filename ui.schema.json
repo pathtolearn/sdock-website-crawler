@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "sections": [
+    { "id": "input", "title": "Input" },
+    { "id": "crawl", "title": "Crawl settings" },
+    { "id": "scope", "title": "Pages to include" },
+    { "id": "browser", "title": "Browser behavior" },
+    { "id": "extract", "title": "HTML extraction" },
+    { "id": "output", "title": "Output and results" }
+  ]
+}

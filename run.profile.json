@@ -1,0 +1,16 @@
+{
+  "limits": { "cpu_cores": 1.0, "memory_mb": 1024, "timeout_seconds": 1800 },
+  "retry_policy": { "max_retries": 2, "backoff_seconds": 20 },
+  "concurrency": { "min_concurrency": 1, "max_concurrency": 20, "autoscale_mode": "adaptive" },
+  "request_policy": {
+    "max_requests_per_minute": 120,
+    "max_depth": 20,
+    "include_globs": [],
+    "exclude_globs": [],
+    "respect_robots": true,
+    "dedupe_by_canonical_url": true
+  },
+  "session_policy": { "use_sessions": true, "max_session_rotations": 8, "retire_on_block": true },
+  "proxy_policy": { "pool": "auto", "country": null, "rotation_mode": "smart" },
+  "budget_policy": { "max_items": null, "max_total_charge_usd": null, "soft_stop": true }
+}
