@@ -8,6 +8,7 @@ import { selectEngine } from "../src/engine";
 import { extractContent } from "../src/extract";
 import { parseRuntimeInput } from "../src/input";
 import { discoverLinks } from "../src/pagination";
+import { createScopeMatcher } from "../src/scope";
 
 const root = process.cwd();
 
@@ -34,6 +35,7 @@ function main(): void {
   const engine = selectEngine(normalized.crawlerType, {
     STEALTHDOCK_CAMOUFOX_ENABLED: "0",
   });
+  const scopeMatcher = createScopeMatcher(normalized.startUrls, normalized.scopeMode, normalized.allowedDomains);
 
   const html = `
     <html lang="en">
@@ -54,9 +56,13 @@ function main(): void {
     removeCssSelectors: normalized.removeCssSelectors,
     keepCssSelectors: normalized.keepCssSelectors,
     htmlTransformer: normalized.htmlTransformer,
+    includeImageLinks: normalized.includeImageLinks,
+    includeAudioLinks: normalized.includeAudioLinks,
+    includeVideoLinks: normalized.includeVideoLinks,
+    isInScope: scopeMatcher,
   });
 
-  const discovered = discoverLinks(html, "https://example.com", normalized.includeGlobs, normalized.excludeGlobs);
+  const discovered = discoverLinks(html, "https://example.com", normalized.includeGlobs, normalized.excludeGlobs, scopeMatcher);
 
   const record = {
     url: "https://example.com",
@@ -81,6 +87,10 @@ function main(): void {
   const outputOk = validateOutput(record);
   if (!outputOk) {
     throw new Error(`Output record failed validation: ${JSON.stringify(validateOutput.errors)}`);
+  }
+  const mediaLinks = extracted.metadata["media_links"] as Record<string, unknown> | undefined;
+  if (!mediaLinks || !Array.isArray(mediaLinks.images) || !Array.isArray(mediaLinks.audio) || !Array.isArray(mediaLinks.video)) {
+    throw new Error("Extraction metadata missing media_links arrays");
   }
 
   console.log("Smoke checks passed");

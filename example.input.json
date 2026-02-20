@@ -3,10 +3,14 @@
     "https://example.com"
   ],
   "crawlerType": "camoufox",
+  "scopeMode": "sameDomainSubdomains",
+  "allowedDomains": [],
   "includeGlobs": [],
   "excludeGlobs": [],
   "maxDepth": 2,
   "maxPages": 40,
+  "maxRuntimeSeconds": 1800,
+  "maxIdleCycles": 5,
   "respectRobots": true,
   "waitForDynamicContentSeconds": 2,
   "waitForSelector": "",
@@ -19,5 +23,8 @@
   "saveHtml": false,
   "saveMarkdown": true,
   "saveText": true,
+  "includeImageLinks": true,
+  "includeAudioLinks": true,
+  "includeVideoLinks": true,
   "maxResults": 500
 }

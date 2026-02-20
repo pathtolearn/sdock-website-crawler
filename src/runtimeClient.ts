@@ -35,7 +35,8 @@ export type BootstrapPayload = {
 
 const runId = process.env.STEALTHDOCK_RUN_ID || process.env.RUN_ID || "";
 const runToken = process.env.STEALTHDOCK_RUN_TOKEN || process.env.RUN_TOKEN || "";
-const baseUrl = process.env.STEALTHDOCK_INTERNAL_API_BASE_URL || process.env.INTERNAL_API_BASE_URL || "http://host.docker.internal:8000";
+const baseUrl = process.env.STEALTHDOCK_INTERNAL_API_BASE_URL || process.env.INTERNAL_API_BASE_URL || "http://host.docker.internal:8920";
+const requestTimeoutMs = Number(process.env.STEALTHDOCK_INTERNAL_API_TIMEOUT_MS || "15000");
 
 function endpoint(path: string): string {
   if (!runId) {
@@ -45,19 +46,30 @@ function endpoint(path: string): string {
 }
 
 async function post<T>(path: string, body: Record<string, unknown>): Promise<T> {
-  const response = await fetch(endpoint(path), {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${runToken}`,
-    },
-    body: JSON.stringify(body),
-  });
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`Internal API ${path} failed: ${response.status} ${text}`);
+  const url = endpoint(path);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), Math.max(1000, requestTimeoutMs));
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${runToken}`,
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`Internal API ${path} failed: ${response.status} ${text}`);
+    }
+    return (await response.json()) as T;
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    throw new Error(`Internal API ${path} request failed: ${reason}`);
+  } finally {
+    clearTimeout(timeout);
   }
-  return (await response.json()) as T;
 }
 
 export async function bootstrap(): Promise<BootstrapPayload> {

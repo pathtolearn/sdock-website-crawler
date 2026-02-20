@@ -39,7 +39,22 @@ export function normalizeLink(baseUrl: string, href: string): string | null {
   }
 }
 
-export function discoverLinks(html: string, baseUrl: string, includeGlobs: string[], excludeGlobs: string[]): DiscoveredLink[] {
+function isHttpUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+export function discoverLinks(
+  html: string,
+  baseUrl: string,
+  includeGlobs: string[],
+  excludeGlobs: string[],
+  isInScope: (url: string) => boolean,
+): DiscoveredLink[] {
   const $ = load(html);
   const seen = new Set<string>();
   const links: DiscoveredLink[] = [];
@@ -47,6 +62,12 @@ export function discoverLinks(html: string, baseUrl: string, includeGlobs: strin
   const pushCandidate = (href: string, priority: number): void => {
     const normalized = normalizeLink(baseUrl, href.trim());
     if (!normalized || seen.has(normalized)) {
+      return;
+    }
+    if (!isHttpUrl(normalized)) {
+      return;
+    }
+    if (!isInScope(normalized)) {
       return;
     }
     if (excludeGlobs.length > 0 && matchesAny(normalized, excludeGlobs)) {

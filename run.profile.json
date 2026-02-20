@@ -11,6 +11,15 @@
     "dedupe_by_canonical_url": true
   },
   "session_policy": { "use_sessions": true, "max_session_rotations": 8, "retire_on_block": true },
-  "proxy_policy": { "pool": "auto", "country": null, "rotation_mode": "smart" },
+  "proxy_policy": {
+    "pool": "auto",
+    "country": null,
+    "rotation_mode": "smart",
+    "enforcement_mode": "required",
+    "apply_scope": "all_outbound",
+    "strategy_mode": "manual",
+    "strategy_max_cost_per_request_usd": null,
+    "strategy_provider_weights": {}
+  },
   "budget_policy": { "max_items": null, "max_total_charge_usd": null, "soft_stop": true }
 }

@@ -40,8 +40,10 @@ Optional but included:
 - [ ] Uses internal runtime endpoints for bootstrap, queue, dataset, and events
 - [ ] Handles ack/fail paths for each leased request
 - [ ] Emits `engine.fallback` when Camoufox requested but unavailable
-- [ ] Enforces `maxDepth`, `maxPages`, `maxResults`
+- [ ] Enforces `maxDepth`, `maxPages`, `maxResults`, `maxRuntimeSeconds`, `maxIdleCycles`
 - [ ] Fails invalid input early with explicit error message
+- [ ] Applies URL scope mode (`sameDomainSubdomains` by default) during link discovery
+- [ ] Emits media URL lists in `metadata.media_links`
 
 ## Smoke checklist
 

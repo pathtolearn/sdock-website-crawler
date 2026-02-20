@@ -16,11 +16,13 @@
     "cheerio": "^1.0.0",
     "playwright": "^1.52.0",
     "robots-parser": "^3.0.1",
-    "turndown": "^7.2.0",
-    "tsx": "^4.20.5"
+    "tldts": "^7.0.11",
+    "tsx": "^4.20.5",
+    "turndown": "^7.2.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.17",
+    "@types/turndown": "^5.0.6",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "typescript": "^5.8.3",

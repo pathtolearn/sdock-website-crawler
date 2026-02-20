@@ -62,21 +62,26 @@ Core fields:
 
 - `startUrls` (required)
 - `crawlerType` (`camoufox` | `playwright` | `http:fast`)
-- `includeGlobs`, `excludeGlobs`, `maxDepth`, `maxPages`, `respectRobots`
+- `scopeMode` (`sameDomainSubdomains` | `sameHostname` | `anyDomain` | `customAllowlist`)
+- `allowedDomains` (used by `customAllowlist`)
+- `includeGlobs`, `excludeGlobs`, `maxDepth`, `maxPages`, `maxRuntimeSeconds`, `maxIdleCycles`, `respectRobots`
 - `waitForDynamicContentSeconds`, `waitForSelector`, `clickSelectors`
 - `removeCookieWarnings`, `removeNavigationElements`
 - `htmlTransformer`, `removeCssSelectors`, `keepCssSelectors`
 - `saveHtml`, `saveMarkdown`, `saveText`, `maxResults`
+- `includeImageLinks`, `includeAudioLinks`, `includeVideoLinks`
 
 ## Notes on advanced fields
 
 Implemented in v1:
 
-- Core crawl limits (`maxDepth`, `maxPages`, `maxResults`)
+- Core crawl limits (`maxDepth`, `maxPages`, `maxResults`, `maxRuntimeSeconds`, `maxIdleCycles`)
+- Domain scope controls with same-domain/subdomain default
 - Include/exclude URL glob filtering
 - Browser waiting and click selectors (browser modes)
 - CSS removal/keep selector extraction controls
 - Robots checks (`respectRobots`) with per-origin cache
+- Media URL extraction (image/audio/video) into metadata
 
 Best-effort / limited behavior in v1:
 
@@ -92,3 +97,4 @@ Each dataset item includes:
 - `links`, `language`, `metadata`
 
 Optional HTML is stored in `metadata.html` when `saveHtml=true`.
+Extracted media URLs are stored in `metadata.media_links` with `images`, `audio`, `video`, and per-type counts.
